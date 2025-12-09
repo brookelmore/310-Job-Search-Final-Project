@@ -1,0 +1,29 @@
+
+<!-- Base template -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remote Job Board</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="container py-4">
+
+    <h1 class="mb-4 text-center">Remote Job Board</h1>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer class="mt-5 text-center text-muted">
+        Job data from
+        <a href="https://jobicy.com/">Jobicy</a>,
+        <a href="https://arbeitnow.com/">Arbeitnow</a>,
+        and
+        <a href="https://remoteok.com/">RemoteOK</a>.
+    </footer>
+
+</body>
+</html>
