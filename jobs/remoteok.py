@@ -1,32 +1,31 @@
 import urllib.request
 import json
 
-def fetch_remoteok_jobs(url: str = "https://remoteok.com/api"):
+def fetch_remoteok_jobs(url="https://remoteok.com/api"):
     try:
-        with urllib.request.urlopen(url) as response:
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0"}
+        )
+        with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode())
 
-        jobs = data[1:] if isinstance(data, list) else []
-
-        parsed = []
-        for job in jobs:
-            parsed.append({
-                "title": job.get("position", ""),
-                "company": job.get("company", ""),
-                "location": job.get("location", ""),
-                "tags": job.get("tags", []),
-                "url": job.get("url", ""),
-                "description": job.get("description", ""),
-            })
-
-        return parsed
+        # Skip metadata rows
+        return [job for job in data if isinstance(job, dict) and job.get("position")]
 
     except Exception as e:
-        print("Error fetching API:", e)
+        print("Error fetching RemoteOK API:", e)
         return []
 
 
-if __name__ == "__main__":
-    data = fetch_remoteok_jobs()
-    for job in data[:5]:
-        print(job["title"], job["url"], "\n")
+def normalize_remoteok(job: dict) -> dict:
+    return {
+        "title": job.get("position", "No title"),
+        "company": job.get("company", "Unknown company"),
+        "location": job.get("location", "Remote"),
+        "remote": True,
+        "description": job.get("description", "")[:250],
+        "full_description": job.get("description", ""),
+        "url": job.get("url", "#"),
+        "source": "RemoteOK"
+    }

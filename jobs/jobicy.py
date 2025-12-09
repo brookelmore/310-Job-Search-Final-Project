@@ -27,3 +27,17 @@ if __name__ == "__main__":
             job.get("url", ""),
             "\n"
         )
+
+def normalize_jobicy(job: dict) -> dict:
+    """Normalize Jobicy job fields so the Flask app can use them consistently."""
+
+    return {
+        "title": job.get("jobTitle", "No title"),
+        "company": job.get("companyName", "Unknown company"),
+        "location": job.get("jobGeo", "Remote"),
+        "type": job.get("jobType", "N/A"),
+        "description": job.get("jobExcerpt", ""),
+        "full_description": job.get("jobDescription", ""),
+        "url": job.get("url", "#"),
+        "source": "Jobicy",
+    }
