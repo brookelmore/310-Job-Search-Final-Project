@@ -5,7 +5,7 @@ def fetch_jobicy_rss(url: str = "https://jobicy.com/api/v2/remote-jobs"):
     try:
         req = urllib.request.Request(
             url,
-            headers={"User-Agent": "Mozilla/5.0"}  # Needed or Jobicy blocks it
+            headers={"User-Agent": "Mozilla/5.0"}
         )
 
         with urllib.request.urlopen(req) as response:
@@ -23,21 +23,7 @@ if __name__ == "__main__":
 
     for job in data[:5]:
         print(
-            job.get("jobTitle", ""),   # ← THIS IS THE CORRECT KEY
+            job.get("jobTitle", ""),
             job.get("url", ""),
             "\n"
         )
-
-def normalize_jobicy(job: dict) -> dict:
-    """Normalize Jobicy job fields so the Flask app can use them consistently."""
-
-    return {
-        "title": job.get("jobTitle", "No title"),
-        "company": job.get("companyName", "Unknown company"),
-        "location": job.get("jobGeo", "Remote"),
-        "type": job.get("jobType", "N/A"),
-        "description": job.get("jobExcerpt", ""),
-        "full_description": job.get("jobDescription", ""),
-        "url": job.get("url", "#"),
-        "source": "Jobicy",
-    }

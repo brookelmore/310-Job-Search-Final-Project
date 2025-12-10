@@ -7,10 +7,8 @@
 <div class="card shadow-sm mx-auto" style="max-width: 900px;">
     <div class="card-body">
 
-        <!-- Company -->
         <h5 class="fw-semibold">{{ job.company }}</h5>
 
-        <!-- Location + Remote tag -->
         <p class="text-muted mb-3">
             {{ job.location if job.location else "Location not specified" }}
             {% if job.remote %}
@@ -18,20 +16,17 @@
             {% endif %}
         </p>
 
-        <!-- Description -->
         <h6 class="fw-bold">Job Description</h6>
         <p style="white-space: pre-wrap;">
             {{ job.description }}
         </p>
 
-        <!-- Apply button -->
         {% if job.url %}
         <a href="{{ job.url }}" target="_blank" class="btn btn-primary me-2">
             Apply Now
         </a>
         {% endif %}
 
-        <!-- Back button -->
         <a href="{{ url_for('results') }}" class="btn btn-outline-secondary">
             Back to Results
         </a>

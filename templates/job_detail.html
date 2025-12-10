@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="mx-auto" style="max-width: 900px;">
+
+    <h2 class="text-center mb-4">{{ job.title }}</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <!-- Company + Location Row -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+
+                <div>
+                    <h5 class="fw-semibold mb-1">{{ job.company }}</h5>
+
+                    <p class="text-muted mb-1">
+                        {{ job.location if job.location else "Location not specified" }}
+                    </p>
+
+                    {% if job.remote %}
+                    <span class="badge bg-success">Remote</span>
+                    {% endif %}
+                </div>
+
+                <!-- Apply Button -->
+                {% if job.url %}
+                <a href="{{ job.url }}" target="_blank" class="btn btn-primary btn-lg">
+                    Apply Now
+                </a>
+                {% endif %}
+            </div>
+
+            <hr>
+
+            <!-- Job Description -->
+            <h2 class="fw-bold mt-3">Job Description</h2>
+            <div class="mt-2" style="white-space: pre-wrap;">
+                {{ job.description | safe }}
+            </div>
+
+            <hr>
+
+            <!-- Navigation Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+
+                <a href="{{ url_for('results') }}" class="btn btn-outline-secondary">
+                    ← Back to Results
+                </a>
+
+                {% if job.url %}
+                <a href="{{ job.url }}" target="_blank" class="btn btn-primary">
+                    Apply Now
+                </a>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

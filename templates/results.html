@@ -4,7 +4,6 @@
 
 <h2 class="mb-4 text-center">Job Results</h2>
 
-<!-- No results message -->
 {% if not jobs %}
     <div class="alert alert-warning text-center">
         No jobs found for your search. Try another keyword!
@@ -18,28 +17,27 @@
         <div class="card shadow-sm h-100">
 
             <div class="card-body">
-                <!-- Job title -->
-                <h5 class="card-title">
+
+                <!-- Job Title -->
+                <h5 class="card-title mb-2">
                     <a href="{{ url_for('job_detail', job_id=loop.index0) }}" class="text-decoration-none">
                         {{ job.title }}
                     </a>
                 </h5>
 
-                <!-- Company -->
+                <!-- Company and Location -->
                 <p class="mb-1 fw-semibold">{{ job.company }}</p>
-
-                <!-- Location -->
                 <p class="text-muted small mb-2">
                     {{ job.location if job.location else "Location not specified" }}
                 </p>
 
-                <!-- Remote tag -->
+                <!-- Remote Badge -->
                 {% if job.remote %}
                 <span class="badge bg-success">Remote</span>
                 {% endif %}
+
             </div>
 
-            <!-- View details + External link -->
             <div class="card-footer d-flex justify-content-between align-items-center">
                 <a href="{{ url_for('job_detail', job_id=loop.index0) }}" class="btn btn-sm btn-outline-primary">
                     View Details

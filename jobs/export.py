@@ -1,8 +1,6 @@
-import csv
-from jobicy import fetch_jobicy_rss
-from postman import fetch_postman_rss
-from remoteok import fetch_remoteok_jobs   # ← NEW IMPORT
-
+from .jobicy import fetch_jobicy_rss
+from .postman import fetch_postman_rss
+from .remoteok import fetch_remoteok_jobs
 
 def normalize_jobicy(job):
     return {
@@ -14,7 +12,6 @@ def normalize_jobicy(job):
         "description": job.get("description", ""),
     }
 
-
 def normalize_postman(job):
     return {
         "title": job.get("title", ""),
@@ -25,17 +22,15 @@ def normalize_postman(job):
         "description": job.get("description", ""),
     }
 
-
 def normalize_remoteok(job):
     return {
         "title": job.get("position", ""),
         "company": job.get("company", ""),
         "location": job.get("location", ""),
-        "remote": True,  
+        "remote": True,
         "url": job.get("url", ""),
         "description": job.get("description", ""),
     }
-
 
 def save_to_csv(filename="jobs_output.csv"):
     jobicy_rss = fetch_jobicy_rss()
@@ -46,23 +41,24 @@ def save_to_csv(filename="jobs_output.csv"):
     postman_clean = [normalize_postman(j) for j in postman_rss]
     remoteok_clean = [normalize_remoteok(j) for j in remoteok_data]
 
-    # Combine all
-    all_jobs = jobicy_clean + postman_clean + remoteok_clean
+    combined = jobicy_clean + postman_clean + remoteok_clean
 
-    # Remove duplicates by URL
-    seen = set()
-    deduped = []
-    for job in all_jobs:
-        url = job.get("url", "").strip()
-        if url and url not in seen:
-            deduped.append(job)
-            seen.add(url)
+    unique = {}
+    for job in combined:
+        unique[job["url"]] = job
+
+    combined = list(unique.values())
 
     fieldnames = ["title", "company", "location", "remote", "url", "description"]
 
     with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(deduped)
+        writer.writerows(combined)
 
-    print(f"Saved {len(deduped)} unique jobs to {filename}")
+    print(f"Saved {len(combined)} unique jobs to {filename}")
+
+
+if __name__ == "__main__":
+    from .export import save_to_csv
+    save_to_csv()
