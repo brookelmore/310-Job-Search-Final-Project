@@ -1,0 +1,7 @@
+1. ChatGBT was used to aid in altering the job_detail template to format descriptions. I pasted
+the original code and instructed it to make the description more readable.
+2. ChatGBT was used to debug errors in my flask application. I pasted some errors and used the
+output to fix issues with route handling and data rendering.
+3. ChatGBT was used to edit the search function in the functions file. I asked it to alter the
+function to better clean job titles in the flask application. This output still does not totally
+work.
